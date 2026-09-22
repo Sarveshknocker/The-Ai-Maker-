@@ -1,0 +1,11 @@
+{
+  "name": "the-ai-maker",
+  "owner": { "name": "Sarvesh" },
+  "plugins": [
+    {
+      "name": "the-ai-maker",
+      "source": "./",
+      "description": "The AI Maker: research, compare and engineer the best domain-specific AI system for any project."
+    }
+  ]
+}

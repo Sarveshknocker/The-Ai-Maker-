@@ -1,0 +1,26 @@
+# Problem archetypes → candidate approaches
+
+Always include the **baseline** column in the shortlist; advanced options must beat it on the objective.
+
+| Archetype | Typical question | Baseline | Strong candidates | Consider when… |
+|---|---|---|---|---|
+| **Tabular classification / regression** | Will this customer churn? What's the price? | Rules, logistic/linear regression | GBDT (LightGBM/XGBoost/CatBoost), tabular foundation models, stacking | Deep nets only with huge data or rich unstructured features |
+| **Time-series forecasting** | Demand next week? Load tomorrow? | Seasonal naïve, ETS/ARIMA | GBDT with lag features, global DL models (N-BEATS/N-HiTS/TFT/PatchTST), time-series foundation models, hierarchical reconciliation | Many related series, exogenous drivers, probabilistic forecasts needed |
+| **Anomaly / fault detection** | Is this machine/transaction abnormal? | Thresholds, z-scores, control charts | Isolation Forest, autoencoders, one-class models, forecasting-residual methods, physics-residual (digital twin) detection, supervised GBDT if labels exist | Rare labels → semi-supervised; physics known → hybrid residuals |
+| **Predictive maintenance / RUL** | When will it fail? | Scheduled maintenance, rules | Survival models, GBDT on condition features, sequence models, physics-informed degradation models, digital twin | Run-to-failure data scarce → simulation/physics + transfer |
+| **Computer vision: classify/detect/segment** | Is there a defect? Where? | Classical CV (thresholds, morphology) | Pretrained CNN/ViT fine-tuning, real-time detectors, promptable/open-vocabulary segmentation & detection, anomaly-detection-style models for defects | Few defect samples → anomaly methods, synthetic data, foundation models |
+| **Document AI / OCR / extraction** | Pull fields from invoices | Templates + regex | OCR + layout models, vision-language models, LLM extraction with schema validation | Variable layouts, multilingual, handwriting |
+| **NLP classification / extraction** | Route this ticket; extract entities | Keyword rules, TF-IDF + linear | Fine-tuned small encoders, LLM zero/few-shot → distilled small model | Low volume or fast-changing labels → LLM; high volume → distil |
+| **Search / Q&A over knowledge** | Answer from our documents | Keyword search (BM25) | Hybrid retrieval (BM25 + embeddings) + reranker + LLM (RAG), knowledge graphs, fine-tuned retrievers | Answers must be grounded, cited and current |
+| **Conversational assistant / copilot** | Help users do X | FAQ, decision tree | LLM with RAG + tools, guardrails, evaluation harness | Open-ended language, many intents |
+| **Agentic automation** | Execute multi-step tasks across tools | Scripts, RPA, workflows | Workflow-first LLM pipelines, tool-using agents with bounded permissions, human approval gates | Steps vary per case and can't be scripted; errors recoverable |
+| **Generation (text/image/audio/3D/code)** | Create content/designs | Templates | Foundation models + prompting, fine-tuning/LoRA, retrieval, constrained decoding, diffusion/flow models | Brand/domain style, controllability, IP concerns |
+| **Recommendation / ranking** | What should this user see? | Popularity, co-occurrence | Matrix factorisation, two-tower retrieval + GBDT/DL ranking, sequential recommenders, bandits for exploration | Cold start → content features/LLM embeddings |
+| **Sequential decisions / control** | Which action now, given state? | Rules, PID/MPC | Model predictive control, RL (offline RL from logs, sim-trained RL), contextual bandits | Good simulator exists or safe exploration possible; long-horizon trade-offs |
+| **Planning / scheduling / allocation** | Best routes, shifts, inventory | Greedy heuristics | Mathematical optimisation (MILP/CP-SAT/VRP solvers), metaheuristics, ML-predicted inputs + optimiser ("predict-then-optimise"), learned heuristics | Hard constraints must hold — solvers guarantee feasibility |
+| **Causal / what-if / uplift** | Did the intervention work? Who to target? | A/B tests, before/after | Causal inference (DiD, synthetic control, DML, uplift models), causal graphs, simulation | Decisions change outcomes; correlation would mislead |
+| **Scientific / physical modelling** | Predict flow/stress/temperature fast | Physics solver (FEM/CFD) | Surrogate models, PINNs, neural operators (FNO/DeepONet), hybrid physics + ML | Solver too slow for real-time or design search; physics partially known |
+| **Speech / audio** | Transcribe, detect sounds | — | Pretrained ASR / audio-event models, fine-tuned for accents/noise, on-device variants | Noise, dialects, privacy → edge |
+| **Geospatial / remote sensing** | Map crops, detect change | Indices (NDVI), thresholds | Pretrained geospatial foundation models, segmentation CNN/ViT, time-series of imagery | Large areas, cloud cover → multi-sensor fusion |
+| **Robotics / embodied** | Pick, navigate, manipulate | Scripted motion | Classical planning + learned perception, imitation learning, sim-to-real RL, vision-language-action models (emerging) | Variability too high for scripts; simulator available |
+| **Multimodal fusion** | Combine images + text + sensors | Separate models + rules | Late/early fusion, multimodal foundation models, cross-attention | Each modality alone is insufficient |

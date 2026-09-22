@@ -1,0 +1,10 @@
+node_modules/
+.aimaker/
+__pycache__/
+*.pyc
+.venv/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example

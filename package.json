@@ -1,0 +1,13 @@
+{
+  "name": "the-ai-maker",
+  "version": "0.1.0",
+  "repository": "github:Sarveshknocker/The-Ai-Maker-",
+  "description": "Engineers the most effective domain-specific AI system for any project: deep problem analysis, state-of-the-art research, multi-architecture comparison, simulation/digital-twin planning, real-world evaluation and an implementation roadmap — for any AI coding assistant.",
+  "type": "module",
+  "bin": { "the-ai-maker": "bin/aimaker.mjs" },
+  "files": ["bin", "skills", "agents", "adapters", ".claude-plugin", "README.md", "LICENSE"],
+  "engines": { "node": ">=18" },
+  "scripts": { "test": "node tests/run.mjs", "test:live": "node tests/run.mjs --live" },
+  "keywords": ["ai-architecture", "machine-learning", "mlops", "digital-twin", "reinforcement-learning", "llm", "ai-agents", "agents-md", "claude-code", "cursor", "copilot", "codex"],
+  "license": "MIT"
+}
