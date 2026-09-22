@@ -66,7 +66,7 @@ export function decide(spec, { iterations = 2000, jitter = 0.3, seed = 42 } = {}
   }
   for (const c of scored) c.winProbability = c.eligible ? Math.round((wins[c.id ?? c.name] / Math.max(1, iterations)) * 1000) / 10 : 0;
 
-  const ranked = scored.sort((a, b) => Number(b.eligible) - Number(a.eligible) || b.score - a.score);
+  const ranked = scored.sort((a, b) => Number(b.eligible) - Number(a.eligible) || b.score - a.score || b.winProbability - a.winProbability);
   const winner = ranked.find((c) => c.eligible) ?? null;
   const runnerUp = ranked.filter((c) => c.eligible)[1] ?? null;
   const verdict = !winner ? 'No candidate satisfies the hard constraints — relax constraints or design a new approach.'
