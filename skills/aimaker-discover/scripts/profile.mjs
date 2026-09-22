@@ -9,7 +9,10 @@ import { fileURLToPath } from 'node:url';
 
 const IGNORE = new Set(['node_modules', '.git', 'dist', 'build', '.next', '.venv', 'venv', 'env', '__pycache__', '.mypy_cache', '.pytest_cache',
   'target', '.gradle', '.idea', '.aimaker', '.aimaker-kit', '.protectors', '.protectors-kit', '.enhancer', '.enhancer-kit', '.immersive-kit',
-  'site-packages', '.ipynb_checkpoints', 'wandb', 'mlruns', '.cache', '.dvc/cache', 'lightning_logs']);
+  'site-packages', '.ipynb_checkpoints', 'wandb', 'mlruns', '.cache', '.dvc/cache', 'lightning_logs',
+  // AI-tool configuration folders (incl. this kit's own copies) are not project data.
+  '.claude', '.cursor', '.windsurf', '.clinerules', '.github', '.vscode']);
+const TOOL_DOCS = /(^|\/)(readme|license|changelog|contributing|agents|claude|gemini|security|code_of_conduct)\.md$/i;
 
 const DATA_KINDS = {
   tabular: /\.(csv|tsv|parquet|feather|arrow|xlsx?|jsonl|ndjson|orc|avro)$/i,
@@ -154,7 +157,7 @@ export function profileProject(root, { maxRows = 50000 } = {}) {
   const data = Object.fromEntries(Object.keys(DATA_KINDS).map((k) => [k, { files: 0, bytes: 0, examples: [] }]));
   for (const f of files) {
     for (const [k, re] of Object.entries(DATA_KINDS)) {
-      if (re.test(f.rel) && !/(^|\/)(readme|license|changelog|contributing|agents|claude|gemini)\.md$/i.test(f.rel)) {
+      if (re.test(f.rel) && !TOOL_DOCS.test(f.rel)) {
         data[k].files++; data[k].bytes += f.size; if (data[k].examples.length < 5) data[k].examples.push(f.rel); break;
       }
     }

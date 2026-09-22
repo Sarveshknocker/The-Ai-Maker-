@@ -203,12 +203,14 @@ test('init → update → remove round-trip keeps user content intact', () => {
   assert.ok(!fs.existsSync(path.join(dir, '.aimaker-kit')));
 });
 
-test('profiler ignores the installed kit and other kits', () => {
-  const dir = write(tmp(), { 'x.csv': 'a,b\n1,2\n' });
-  node([CLI, 'init', dir, '--tools', 'agents']);
+test('profiler ignores the installed kit (all adapters) and AI-tool config folders', () => {
+  const dir = write(tmp(), { 'x.csv': 'a,b\n1,2\n', 'docs/manual.pdf': 'x' });
+  const r = node([CLI, 'init', dir]); // every adapter, incl. .claude/skills copies
+  assert.equal(r.status, 0, r.stderr);
   const p = profileProject(dir);
   assert.equal(p.data.tabular.files, 1);
-  assert.ok(!p.data.text.examples.some((e) => e.startsWith('.aimaker-kit')));
+  assert.equal(p.data.text.files, 1, `kit/tool docs counted as data: ${JSON.stringify(p.data.text.examples)}`);
+  assert.deepEqual(p.data.text.examples, ['docs/manual.pdf']);
 });
 
 test('every skill has valid frontmatter and referenced files exist', () => {
