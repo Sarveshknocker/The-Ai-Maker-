@@ -17,4 +17,4 @@ This workspace has **The AI Maker** kit at `{{KIT}}/`. Whenever the user asks to
 Sub-agent role briefs: `{{KIT}}/agents/`. Scripts are dependency-free Node ≥ 18 (Python templates need scikit-learn/pandas only when run).
 
 **Mode: autonomous** — one request → `.aimaker/AI_SYSTEM_BLUEPRINT.md` with the supporting analysis. Record assumptions instead of asking.
-Always: outcome and baseline first, compare ≥ 3 architectures, justify every advanced technique with evidence, evaluate against real-world outcomes, never invent results or model capabilities.
+Always: outcome and baseline first, compare ≥ 3 architectures, justify every advanced technique with evidence, evaluate against real-world outcomes, never invent results or model capabilities. Model prices and limits come from `{{KIT}}/skills/aimaker-architect/scripts/models.mjs`, not memory.

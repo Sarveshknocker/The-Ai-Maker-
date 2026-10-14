@@ -154,6 +154,8 @@ switch (cmd) {
   case 'research': runScript('skills/aimaker-research/scripts/sota.mjs', rest); break;
   case 'decide': runScript('skills/aimaker-architect/scripts/decide.mjs', rest); break;
   case 'estimate': runScript('skills/aimaker-architect/scripts/estimate.mjs', rest); break;
+  case 'models': runScript('skills/aimaker-architect/scripts/models.mjs', rest); break;
+  case 'redteam': runScript('skills/aimaker-evaluate/scripts/redteam.mjs', rest); break;
   default:
     console.log(`The AI Maker — engineer the most effective domain-specific AI system for any project
 
@@ -163,7 +165,9 @@ Commands:
   remove   [dir]             uninstall (keeps .aimaker/ outputs)
   profile  [dir]             project & data profile → .aimaker/project-profile.{md,json}
   research "<query>"         state-of-the-art collector → .aimaker/research/<tag>.{md,json}
-           [--queries-file f] [--sources arxiv,hf-papers,openalex,github,huggingface,hf-datasets,hn,...] [--limit 8] [--tag name]
+           [--queries-file f] [--sources cases,arxiv,hf-papers,openalex,github,huggingface,hf-datasets,hn,...] [--limit 8] [--tag name]
   decide   [candidates.json] weighted architecture decision + Monte-Carlo robustness → .aimaker/DECISION.md
-  estimate <train|finetune|inference|api|throughput> [--options]   compute / memory / cost planning`);
+  estimate <train|finetune|inference|api|throughput|sample> [--options]   compute / memory / cost / sample-size planning
+  models   find "<words>" | cost --models a,b --requests-per-day N --in-tokens N --out-tokens N   live model prices & limits
+  redteam  --app "<one line>" [--tools a,b] [--pii x]   defensive LLM test set for eval_harness.py`);
 }

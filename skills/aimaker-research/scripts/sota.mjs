@@ -35,7 +35,46 @@ async function getText(fetchImpl, url) {
 
 // Each source: (query, limit, fetchImpl) => Promise<Item[]>
 // Item: { source, kind, title, url, summary, date, metrics: {...} }
+// Curated lists of real-world ML system case studies (company engineering blogs). Fetched at run time, never bundled.
+const CASE_LISTS = () => (process.env.AIMAKER_CASES_URLS ?? [
+  'https://raw.githubusercontent.com/Engineer1999/A-Curated-List-of-ML-System-Design-Case-Studies/main/README.md',
+  'https://raw.githubusercontent.com/mallahyari/ml-practical-usecases/main/README.md',
+].join(',')).split(',').filter(Boolean);
+let caseCache = null;
+
+/** Parses Markdown table rows that describe one case study each (company, industry, description, title, link, year). */
+export function parseCaseTable(md) {
+  const out = [];
+  for (const line of md.split('\n')) {
+    if (!line.startsWith('|') || /^\|\s*:?-{3}/.test(line)) continue;
+    const cells = line.split('|').slice(1, -1).map((c) => c.trim());
+    const url = line.match(/https?:\/\/[^\s)|]+/)?.[0];
+    if (!url || cells.length < 4) continue;
+    const linkText = line.match(/\[([^\]]+)\]\(https?:/)?.[1];
+    const text = cells.filter((c) => c && !/^\d+$/.test(c) && !/^https?:/.test(c) && !/^\[/.test(c));
+    const [company, industry, description] = text;
+    const year = cells.find((c) => /^(19|20)\d{2}$/.test(c));
+    const tags = text.slice(3).find((c) => /^[\w\s-]+(,[\w\s-]+)+$/.test(c) && c.length < 80 && !/\s{2,}/.test(c)) ?? '';
+    const title = linkText ?? text.slice(3).find((c) => c !== tags) ?? description;
+    if (!company || !title) continue;
+    out.push({ title: `${company}: ${strip(title)}`, url, summary: clip([industry, description, tags].filter(Boolean).join(' · ')), date: year ? `${year}-01-01` : null, metrics: {}, extra: { keywords: tags.split(',').map((t) => t.trim()).filter(Boolean), company } });
+  }
+  return out;
+}
+
 export const SOURCES = {
+  cases: {
+    label: 'Real-world ML system case studies (company engineering blogs)', kind: 'case-study',
+    async run(q, limit, f) {
+      caseCache ??= (await Promise.all(CASE_LISTS().map(async (u) => { try { return parseCaseTable(await getText(f, u)); } catch { return []; } }))).flat();
+      if (!caseCache.length) { caseCache = null; throw new Error('case-study lists unavailable'); }
+      const k = keywords(q);
+      const seen = new Set();
+      return caseCache.filter((c) => !seen.has(c.url) && seen.add(c.url))
+        .map((c) => ({ c, hits: k.filter((w) => `${c.title} ${c.summary}`.toLowerCase().includes(w.length >= 6 ? w.slice(0, 5) : w)).length }))
+        .filter((x) => x.hits).sort((a, b) => b.hits - a.hits || String(b.c.date).localeCompare(String(a.c.date))).slice(0, limit).map((x) => x.c);
+    },
+  },
   github: {
     label: 'GitHub repositories', kind: 'code',
     async run(q, limit, f) {
@@ -184,7 +223,7 @@ export const SOURCES = {
 
 // Defaults: research (arXiv, HF papers, OpenAlex), implementations (GitHub, HF models), data (HF datasets), practitioners (HN).
 // Opt-in: stackoverflow, reddit (needs REDDIT_CLIENT_ID/SECRET), wikipedia, npm, news.
-export const DEFAULT_SOURCES = ['arxiv', 'hf-papers', 'openalex', 'github', 'huggingface', 'hf-datasets', 'hn'];
+export const DEFAULT_SOURCES = ['cases', 'arxiv', 'hf-papers', 'openalex', 'github', 'huggingface', 'hf-datasets', 'hn'];
 
 const STOP = new Set('a an the and or but for nor of to in on at by with from into onto over under about as is are was were be been being this that these those it its i we you they my our your their me us them how what why when where which who whom can could should would will shall may might must do does did done have has had not no yes very more most less least just also than then so such any some each every all both either neither own same other another using use used via per vs versus without within between among across after before during new best better good way ways help helps make makes build building create app platform system solution solutions tool tools idea problem problems want need needs small large big simple'.split(' '));
 

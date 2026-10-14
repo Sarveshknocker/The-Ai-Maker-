@@ -18,14 +18,14 @@ Write 6–12 **short** queries in `.aimaker/queries.txt` combining:
 ```bash
 node <kit>/skills/aimaker-research/scripts/sota.mjs --queries-file .aimaker/queries.txt --limit 8 --tag sota
 ```
-Defaults: `arxiv, hf-papers, openalex, github, huggingface, hf-datasets, hn` (opt-in: `stackoverflow, reddit, wikipedia, npm, news`). The collector broadens queries automatically, filters irrelevant hits, and weights freshness strongly (AI moves fast). Output: `.aimaker/research/sota.{md,json}`. Optional env: `GITHUB_TOKEN`, `OPENALEX_MAILTO`, `REDDIT_CLIENT_ID/SECRET`.
+Defaults: `cases, arxiv, hf-papers, openalex, github, huggingface, hf-datasets, hn`. `cases` searches ~950 published case studies of production ML systems (Stripe, Uber, Netflix, Airbnb, Pinterest…) from two curated lists: read the 2–3 closest ones before designing, because they show what actually shipped, the baseline it beat and the failure modes (opt-in: `stackoverflow, reddit, wikipedia, npm, news`). The collector broadens queries automatically, filters irrelevant hits, and weights freshness strongly (AI moves fast). Output: `.aimaker/research/sota.{md,json}`. Optional env: `GITHUB_TOKEN`, `OPENALEX_MAILTO`, `REDDIT_CLIENT_ID/SECRET`.
 
 ## 3. Web search (no free API)
 - Leaderboards/benchmarks relevant to the task (check dataset, split, date, whether results are self-reported).
 - **Official model cards & docs** for candidate models/services: capabilities, context limits, licenses, prices, rate limits, data-usage terms. **Verify current versions; don't rely on memory.**
 - Domain-specific venues and standards (e.g. medical imaging, industrial IoT, remote sensing, finance).
 - Regulatory guidance for the sector and the EU AI Act risk tier if applicable.
-- Case studies of production deployments (engineering blogs) — they reveal real-world failure modes that papers omit.
+- More case studies of production deployments than `cases` found (engineering blogs) — they reveal real-world failure modes that papers omit.
 
 ## 4. Appraise critically (`references/reading-research.md`)
 For every technique you might recommend, record: problem setting vs ours, data scale/modality, metric and baseline used, reproducibility (code? weights? license?), compute required, known limitations, and **transfer risk** to our domain.

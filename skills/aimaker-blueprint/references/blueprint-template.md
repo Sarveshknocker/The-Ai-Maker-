@@ -48,6 +48,8 @@ Serving pattern (batch/online/streaming/edge/hybrid), infrastructure, latency & 
 AI-specific threats and mitigations, reliability patterns, fairness/explainability/human oversight, regulatory classification and obligations.
 
 ## 12. Costs
+Hosted-model costs come from `MODEL_COSTS.md` (live catalog, date stated) and are confirmed on vendor pricing pages.
+
 | Item | Estimate | Assumptions/source |
 |---|---|---|
 | Data acquisition & labeling | | |
@@ -72,6 +74,9 @@ AI-specific threats and mitigations, reliability patterns, fairness/explainabili
 
 ## 15. Future improvements
 Research bets and upgrades worth revisiting (with trigger conditions).
+
+## 15b. System card (one page, for users, auditors and regulators)
+Intended use and out-of-scope uses · users affected · data sources, licences and personal data · evaluation results per slice (with intervals) and known failure modes · red-team results · human oversight and how to contest a decision · monitoring and incident contact · EU AI Act risk class (or other regime) and obligations · version and change log.
 
 ## 16. Assumptions & sources
 All assumptions with verification plans; all sources with links and dates.

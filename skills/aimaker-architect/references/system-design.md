@@ -12,6 +12,19 @@ Data sources → ingestion → validation → feature/embedding computation → 
 | Edge / on-device | latency, privacy, connectivity, cost | quantisation, OTA model updates, on-device monitoring |
 | Hybrid edge-cloud cascade | cheap local model, escalate hard cases | best cost/latency trade-off for many vision/NLP systems |
 
+### Serving patterns to choose from (name the one you use and why)
+| Pattern | Use when | Watch out for |
+|---|---|---|
+| Batch / precompute | Predictions can be hours old (recommendations, risk scores) | Staleness; cold-start items |
+| Synchronous API | The caller waits for the answer | p95 latency budget, timeouts, fallback answer |
+| Asynchronous queue | Slow or bursty work (documents, video, agents) | Idempotency, retries, dead-letter queue |
+| Prediction cache | Repeated inputs (FAQ, product pages, embeddings) | Cache invalidation on model/prompt change |
+| Cascade / router | Most inputs are easy | Calibrated confidence for escalation; measure each stage |
+| Shadow | Validating a new model on live traffic | Doubled cost; never act on shadow output |
+| Canary / A/B | Proving outcome impact | Sample size and duration (estimate.mjs sample) |
+| Edge + cloud fallback | Offline or privacy-critical | Model update channel, version skew |
+| Human-in-the-loop | High cost of error, low volume | Queue time, reviewer agreement, feedback capture |
+
 ## Model strategy patterns
 Pretrained API → prompt/RAG → fine-tune → distil into small model; ensembles & cascades; champion/challenger; per-segment models vs one global model; uncertainty-aware abstention to humans.
 

@@ -22,10 +22,17 @@ Plus **guardrails** that must not regress (safety, fairness gaps, operator workl
 | Production | Full rollout with monitoring & rollback | Ongoing SLOs met |
 
 ## 3. Statistical rigour
-Confidence intervals (bootstrap), multiple seeds, significance tests for A/B, power analysis for pilot size, correction for multiple comparisons, pre-registered success criteria.
+Size the evaluation before running it, and pre-register the success criteria:
+```bash
+node <kit>/skills/aimaker-architect/scripts/estimate.mjs sample --type ci --p 0.9 --margin 0.03          # golden-set size (per slice)
+node <kit>/skills/aimaker-architect/scripts/estimate.mjs sample --type ab --p0 0.10 --mde 0.02 --traffic-per-day 4000   # pilot / A/B size and duration
+```
+Report confidence intervals (bootstrap), use multiple seeds, correct for multiple comparisons, and never stop an A/B test early because it "looks good".
 
 ## 4. Special cases
-- **LLM / RAG / agents**: golden sets built from real cases (incl. hard and adversarial ones), task success rate, groundedness/citation accuracy, hallucination rate, retrieval recall@k, tool-call correctness, cost/latency per task, safety/refusal behaviour, prompt-injection resistance. LLM-as-judge only after calibrating it against human labels. Re-run on every prompt/model change (`<kit>/skills/aimaker-architect/templates/eval_harness.py`).
+- **LLM / RAG / agents**: golden sets built from real cases (incl. hard and adversarial ones), task success rate, groundedness/citation accuracy, hallucination rate, retrieval recall@k, tool-call correctness, cost/latency per task, safety/refusal behaviour, prompt-injection resistance. LLM-as-judge only after calibrating it against human labels. Re-run on every prompt/model change with `<kit>/skills/aimaker-architect/templates/eval_harness.py`. It supports per-case assertions (contains, regex, JSON schema, latency, cost, judge score), retrieval recall@k / MRR / nDCG, bootstrap intervals, `--repeats` (consistency: does the same case pass every time?), `--baseline` (paired comparison with a McNemar significance test, so "B is better than A" is a measured claim), and `--judge` with calibration: an LLM judge is trusted only when it agrees with ≥ 10 human labels (both good and bad answers) at Cohen's kappa ≥ 0.6.
+- **Security of LLM features**: generate a defensive test set for the system you are building and gate on it:
+  `node <kit>/skills/aimaker-evaluate/scripts/redteam.mjs --app "<one line>" --tools <tool,names> --pii <sample-identifiers>` → `.aimaker/eval/redteam.jsonl` (prompt injection direct and indirect, system-prompt leakage via a canary, data disclosure, unsafe output handling, excessive agency, unbounded consumption; OWASP Top 10 for LLM Applications). Target pass rate 100%; every failure is a design fix (separate instructions from data, least-privilege tools, confirmation for consequential actions, output encoding), not a prompt tweak alone.
 - **Forecasting**: rolling-origin backtests, MASE/WAPE, bias, prediction-interval coverage, performance at the decision horizon.
 - **RL / control / simulation-trained**: evaluate in held-out simulation scenarios, then with real data (off-policy evaluation), then in shadow/limited live; report constraint violations and worst-case, not just mean reward.
 - **Computer vision**: per-condition slices (lighting, device, site), small-object performance, false alarms per hour/shift.

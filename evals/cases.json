@@ -1,0 +1,68 @@
+{
+  "kit": "the-ai-maker",
+  "how_to_run": "Give each prompt (and fixture) to two fresh agent sessions, one with the kit installed and one without. A domain expert who does not know which is which scores both blueprints 1-10 on: correctness of the recommendation, whether a simpler baseline was considered fairly, evidence quality (real sources, no invented numbers), cost realism (dated prices), and whether the evaluation plan would actually catch a bad system. Tick every grader with evidence. Record results in evals/RESULTS.md.",
+  "cases": [
+    {
+      "id": "churn-tabular",
+      "kind": "build",
+      "fixture": "SaaS repo with a customers.csv (12k rows, churn label, signup_date) and no ML yet",
+      "prompt": "Add AI to predict which customers will churn next month.",
+      "graders": [
+        "Profiler run; time-based split chosen because of signup_date",
+        "A GBDT/linear baseline is planned and the deep/LLM option has to beat it",
+        "Decision engine run on ≥3 candidates; weights justified",
+        "Evaluation uses cost-weighted metrics at the operating threshold, sized with estimate.mjs sample"
+      ],
+      "expected": "A pragmatic GBDT-first blueprint with an honest comparison, not an LLM by default."
+    },
+    {
+      "id": "support-rag",
+      "kind": "build",
+      "fixture": "Help-centre markdown (400 articles) and ticket export",
+      "prompt": "Design an AI assistant that answers customer support questions from our docs.",
+      "graders": [
+        "Case studies of production support assistants cited",
+        "models.mjs cost run for ≥2 model sizes with dated prices",
+        "Golden set with retrieval metrics and assertions; judge calibration planned",
+        "redteam.mjs set included with a 100% pass gate; tools need confirmation"
+      ],
+      "expected": "RAG design with retrieval evaluation, cheap-model-first routing, red-team gate and a system card."
+    },
+    {
+      "id": "vision-defects",
+      "kind": "build",
+      "fixture": "Factory line brief: 2 cameras, 30 fps, 50 ms budget, 300 labelled defect images",
+      "prompt": "What AI should we use to detect defects on our line?",
+      "graders": [
+        "Latency budget drives an edge architecture; inference estimated",
+        "Few-shot/anomaly-detection approaches considered for 300 images",
+        "Synthetic data or simulation decision documented either way",
+        "Per-condition slices (lighting, product variant) in the evaluation"
+      ],
+      "expected": "Edge anomaly-detection-first design with a data plan and slice-aware evaluation."
+    },
+    {
+      "id": "compare-two-prompts",
+      "kind": "review",
+      "fixture": "An existing LLM feature with prompt v1 and v2 and a 60-case golden set",
+      "prompt": "Is prompt v2 better than v1?",
+      "graders": [
+        "eval_harness.py run with --baseline",
+        "Answer states the delta, its interval and the McNemar p-value",
+        "Says \"not proven\" if the difference is not significant"
+      ],
+      "expected": "A measured answer, not an opinion."
+    },
+    {
+      "id": "should-not-trigger-typo",
+      "kind": "negative",
+      "fixture": "Any repository",
+      "prompt": "Fix the typo in the README title.",
+      "graders": [
+        "No .aimaker/ folder, no research run",
+        "A one-line edit"
+      ],
+      "expected": "The kit stays out of the way."
+    }
+  ]
+}

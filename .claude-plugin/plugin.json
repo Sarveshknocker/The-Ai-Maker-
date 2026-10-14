@@ -1,7 +1,20 @@
 {
   "name": "the-ai-maker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Engineers the most effective domain-specific AI system for any project: problem analysis, SOTA research, multi-architecture decisions, simulation/digital twins, real-world evaluation and roadmap.",
-  "author": { "name": "Sarvesh", "url": "https://github.com/Sarveshknocker" },
-  "keywords": ["ai-architecture", "machine-learning", "mlops", "digital-twin", "reinforcement-learning", "llm"]
+  "author": {
+    "name": "Sarvesh",
+    "url": "https://github.com/Sarveshknocker"
+  },
+  "keywords": [
+    "ai-architecture",
+    "machine-learning",
+    "mlops",
+    "digital-twin",
+    "reinforcement-learning",
+    "llm"
+  ],
+  "repository": "https://github.com/Sarveshknocker/The-Ai-Maker-",
+  "homepage": "https://github.com/Sarveshknocker/The-Ai-Maker-",
+  "license": "MIT"
 }

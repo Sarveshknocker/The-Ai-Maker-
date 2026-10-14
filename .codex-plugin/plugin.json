@@ -1,0 +1,35 @@
+{
+  "name": "the-ai-maker",
+  "version": "0.2.0",
+  "description": "Engineer the most effective domain-specific AI system for any project, with evidence and real-world evaluation.",
+  "author": {
+    "name": "Sarvesh",
+    "url": "https://github.com/Sarveshknocker"
+  },
+  "homepage": "https://github.com/Sarveshknocker/The-Ai-Maker-",
+  "repository": "https://github.com/Sarveshknocker/The-Ai-Maker-",
+  "license": "MIT",
+  "keywords": [
+    "ai-architecture",
+    "machine-learning",
+    "mlops",
+    "digital-twin",
+    "reinforcement-learning",
+    "llm"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "The AI Maker",
+    "shortDescription": "Design, compare and evaluate AI systems with evidence.",
+    "longDescription": "Problem discovery, research across papers, models and ~950 production case studies, ≥3 architectures scored with a robustness-tested decision engine, live model prices, sample-size planning, an evaluation harness with significance tests and judge calibration, a defensive LLM red-team set, and an implementation blueprint.",
+    "developerName": "Sarvesh",
+    "category": "Productivity",
+    "capabilities": [],
+    "websiteURL": "https://github.com/Sarveshknocker/The-Ai-Maker-",
+    "defaultPrompt": [
+      "What is the best AI approach for this project? Give me the full blueprint.",
+      "Compare the cost of these models for our workload.",
+      "Build an evaluation plan and red-team set for our LLM feature."
+    ]
+  }
+}

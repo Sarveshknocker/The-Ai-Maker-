@@ -20,7 +20,12 @@ node <kit>/skills/aimaker-architect/scripts/estimate.mjs inference  --params 8e9
 node <kit>/skills/aimaker-architect/scripts/estimate.mjs api        --requests-per-day 5000 --in-tokens 1200 --out-tokens 300 --in-price <USD/1M> --out-price <USD/1M>
 node <kit>/skills/aimaker-architect/scripts/estimate.mjs throughput --tokens-per-second 60 --out-tokens 300 --concurrency 16
 ```
-Prices are never hard-coded. Look up current prices and cite them. For classical models, estimate from benchmarks or a quick timing run on sample data.
+Prices are never hard-coded or remembered. For hosted models, use the live catalog (prices, context windows, capabilities):
+```bash
+node <kit>/skills/aimaker-architect/scripts/models.mjs find "claude" --tools --min-context 200000
+node <kit>/skills/aimaker-architect/scripts/models.mjs cost --models <id1>,<id2>,<id3> --requests-per-day 5000 --in-tokens 1200 --out-tokens 300 --cache-hit 0.5
+```
+`cost` writes `.aimaker/MODEL_COSTS.md`. The catalog is community-maintained (LiteLLM) and cached for 24 h: confirm the chosen model on the vendor's pricing page and cite both. Compare at least one small/cheap model against the strong one: the cheap one often passes the eval at a fraction of the cost. For classical models, estimate from benchmarks or a quick timing run on sample data.
 
 ## 3. Decide
 Score each candidate 1–5 on: `objectiveFit, dataFit, performance, robustness, latency, cost, explainability, maintainability, timeToValue, risk` (5 = best; cost 5 = cheapest; risk 5 = lowest). Justify every score in ARCHITECTURE_OPTIONS.md. Choose the weight profile that matches the brief (`balanced`, `safety-critical`, `realtime-edge`, `regulated`, `startup-mvp`, `frontier-performance`) and set hard constraints from non-negotiable requirements.

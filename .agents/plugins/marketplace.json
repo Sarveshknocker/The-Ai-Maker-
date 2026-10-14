@@ -1,0 +1,21 @@
+{
+  "name": "the-ai-maker",
+  "interface": {
+    "displayName": "The AI Maker"
+  },
+  "plugins": [
+    {
+      "name": "the-ai-maker",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/Sarveshknocker/The-Ai-Maker-.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
