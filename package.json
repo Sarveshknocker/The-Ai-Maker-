@@ -1,6 +1,6 @@
 {
   "name": "the-ai-maker",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "repository": "github:Sarveshknocker/The-Ai-Maker-",
   "description": "Engineers the most effective domain-specific AI system for any project: deep problem analysis, state-of-the-art research, multi-architecture comparison, simulation/digital-twin planning, real-world evaluation and an implementation roadmap — for any AI coding assistant.",
   "type": "module",
@@ -23,7 +23,7 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "node tests/run.mjs",
+    "test": "node tests/run.mjs && node tests/installer.mjs",
     "test:live": "node tests/run.mjs --live"
   },
   "keywords": [

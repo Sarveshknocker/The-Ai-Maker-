@@ -1,5 +1,5 @@
 ---
-name: research-scout
+name: aimaker-research-scout
 description: State-of-the-art research scout. Finds and critically appraises papers, models, datasets, repos, benchmarks, vendor docs and production case studies for a specific AI task and domain. Use in parallel over different technique families.
 tools: Read, Grep, Glob, Bash, WebSearch, WebFetch, Write
 ---

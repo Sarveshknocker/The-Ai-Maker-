@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0 — 2026-11-05
+Safety release, from an external review (P0 blockers).
+- **The installer can no longer delete your files.** New shared `bin/kit-installer.mjs` (the same file in all of Sarvesh's kits). `--kit-dir` must be a new sub-folder of the project. A folder the kit did not create is never deleted. Only paths recorded in the manifest *and* produced by this kit are removed, so a tampered manifest cannot widen the delete. Existing files are never overwritten: `--force` backs them up to `<kit-dir>/backup/` and `remove` restores them. Covered by `tests/installer.mjs` (11 cases, run by `npm test`).
+- **Kits no longer collide:** agents are prefixed `aimaker-` (`aimaker-solution-architect`, …). Updating an older install removes the old copies, but only when they are provably this kit's.
+
 ## 0.2.0 — 2026-10-15
 Upgrade informed by leading open-source AI engineering and evaluation projects (see `research/BENCHMARK.md`).
 

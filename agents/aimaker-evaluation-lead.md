@@ -1,5 +1,5 @@
 ---
-name: evaluation-lead
+name: aimaker-evaluation-lead
 description: Evaluation and reliability lead / red team. Designs real-world metrics, validation ladders and go/no-go gates, and challenges the proposed AI system for leakage, overfitting to benchmarks, unsafe failure modes, security threats and unjustified complexity.
 tools: Read, Grep, Glob, Bash, Write
 ---

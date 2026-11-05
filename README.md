@@ -97,7 +97,7 @@ skills/
                       serving patterns, ADRs, Python templates (baseline, eval harness)
   aimaker-evaluate/   metric hierarchy, validation ladder, monitoring, defensive red-team set (scripts/redteam.mjs)
   aimaker-blueprint/  final blueprint + roadmap template
-agents/               problem-analyst, research-scout, solution-architect, evaluation-lead
+agents/               aimaker-problem-analyst, -research-scout, -solution-architect, -evaluation-lead
 bin/aimaker.mjs       installer + CLI
 evals/                with-kit vs baseline cases judged blind by a domain expert
 research/BENCHMARK.md what we learned from leading open-source projects

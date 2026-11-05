@@ -1,5 +1,5 @@
 ---
-name: solution-architect
+name: aimaker-solution-architect
 description: AI solution architect. Designs at least three genuinely different end-to-end architectures (classical, deep/foundation, hybrid/simulation/RL/agentic/edge as justified), estimates compute/latency/cost, scores them with the decision engine, and writes ADRs and the system design.
 tools: Read, Grep, Glob, Bash, Write
 ---

@@ -194,7 +194,7 @@ test('init → update → remove round-trip keeps user content intact', () => {
   let r = node([CLI, 'init', dir]);
   assert.equal(r.status, 0, r.stderr);
   assert.match(fs.readFileSync(path.join(dir, 'AGENTS.md'), 'utf8'), /Keep\.[\s\S]*\.aimaker-kit\/skills\/aimaker\/SKILL\.md/);
-  for (const f of ['CLAUDE.md', 'GEMINI.md', '.github/copilot-instructions.md', '.cursor/rules/the-ai-maker.mdc', '.windsurf/rules/the-ai-maker.md', '.clinerules/the-ai-maker.md', '.claude/skills/aimaker/SKILL.md', '.claude/agents/solution-architect.md', '.aimaker-kit/skills/aimaker-architect/templates/eval_harness.py']) assert.ok(fs.existsSync(path.join(dir, f)), `missing ${f}`);
+  for (const f of ['CLAUDE.md', 'GEMINI.md', '.github/copilot-instructions.md', '.cursor/rules/the-ai-maker.mdc', '.windsurf/rules/the-ai-maker.md', '.clinerules/the-ai-maker.md', '.claude/skills/aimaker/SKILL.md', '.claude/agents/aimaker-solution-architect.md', '.aimaker-kit/skills/aimaker-architect/templates/eval_harness.py']) assert.ok(fs.existsSync(path.join(dir, f)), `missing ${f}`);
   r = node([CLI, 'update', dir]);
   assert.equal(r.status, 0, r.stderr);
   assert.equal((fs.readFileSync(path.join(dir, 'AGENTS.md'), 'utf8').match(/ai-maker:start/g) ?? []).length, 1);

@@ -1,5 +1,5 @@
 ---
-name: problem-analyst
+name: aimaker-problem-analyst
 description: Domain and problem analyst for AI projects. Profiles the codebase and data, interrogates the real-world problem, users, constraints and cost of errors, and writes a PROBLEM_BRIEF with measurable objectives.
 tools: Read, Grep, Glob, Bash, Write
 ---
