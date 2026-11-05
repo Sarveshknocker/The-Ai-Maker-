@@ -11,7 +11,8 @@
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { realpathSync } from 'node:fs';
 
 export const CATEGORIES = {
   LLM01: 'Prompt injection (direct and indirect)',
@@ -62,7 +63,9 @@ export function generate({ app = 'the assistant', canary = 'auto', tools = [], p
   return { canary: token, cases };
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
+// Run as a CLI? Compare real paths: macOS temp dirs are symlinks (/var → /private/var), Windows has 8.3 short names.
+const realPath = (p) => { try { return realpathSync.native(p); } catch { return path.resolve(p); } };
+if (process.argv[1] && realPath(process.argv[1]).toLowerCase() === realPath(fileURLToPath(import.meta.url)).toLowerCase()) {
   const args = process.argv.slice(2);
   const opt = (n, d) => { const i = args.indexOf(`--${n}`); return i >= 0 ? args[i + 1] : d; };
   const list = (s) => (s ? s.split(',').map((x) => x.trim()).filter(Boolean) : []);

@@ -6,6 +6,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { realpathSync } from 'node:fs';
 
 const IGNORE = new Set(['node_modules', '.git', 'dist', 'build', '.next', '.venv', 'venv', 'env', '__pycache__', '.mypy_cache', '.pytest_cache',
   'target', '.gradle', '.idea', '.aimaker', '.aimaker-kit', '.protectors', '.protectors-kit', '.enhancer', '.enhancer-kit', '.immersive-kit',
@@ -233,7 +234,9 @@ ${t.issues.map((i) => `- ⚠️ ${i}`).join('\n') || '- none detected'}
 `).join('\n')}`;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+// Run as a CLI? Compare real paths: macOS temp dirs are symlinks (/var → /private/var), Windows has 8.3 short names.
+const realPath = (p) => { try { return realpathSync.native(p); } catch { return path.resolve(p); } };
+if (process.argv[1] && realPath(process.argv[1]).toLowerCase() === realPath(fileURLToPath(import.meta.url)).toLowerCase()) {
   const args = process.argv.slice(2);
   const opt = (n, d) => { const i = args.indexOf(n); return i >= 0 ? args[i + 1] : d; };
   const root = path.resolve(args.find((a, i) => !a.startsWith('--') && !args[i - 1]?.startsWith('--')) ?? process.cwd());

@@ -11,6 +11,7 @@
 //   node estimate.mjs sample     --type ab --p0 0.10 --mde 0.02 [--alpha 0.05 --power 0.8 --traffic-per-day 4000]
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { realpathSync } from 'node:fs';
 
 const GiB = 1024 ** 3;
 const r1 = (x) => Math.round(x * 10) / 10;
@@ -98,7 +99,9 @@ export function throughput({ tokensPerSecond, outTokens, concurrency = 1, ttftMs
   return { latencySeconds: r1(latency), requestsPerMinute: Math.round((60 / latency) * concurrency) };
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+// Run as a CLI? Compare real paths: macOS temp dirs are symlinks (/var → /private/var), Windows has 8.3 short names.
+const realPath = (p) => { try { return realpathSync.native(p); } catch { return path.resolve(p); } };
+if (process.argv[1] && realPath(process.argv[1]).toLowerCase() === realPath(fileURLToPath(import.meta.url)).toLowerCase()) {
   const [cmd, ...rest] = process.argv.slice(2);
   const o = {};
   for (let i = 0; i < rest.length; i++) if (rest[i].startsWith('--')) { const k = rest[i].slice(2).replace(/-([a-z])/g, (_, c) => c.toUpperCase()); const v = rest[i + 1]; o[k] = v !== undefined && !v.startsWith('--') ? (isNaN(Number(v)) ? v : Number(v)) : true; }

@@ -10,7 +10,8 @@
 // Always confirm the final choice on the vendor's pricing page and cite it: community data can lag a price change.
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { realpathSync } from 'node:fs';
 
 const URL_ = () => process.env.AIMAKER_MODELS_URL ?? 'https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json';
 const CACHE = () => path.resolve(process.env.AIMAKER_CACHE ?? '.aimaker/cache', 'models.json');
@@ -84,7 +85,9 @@ export function cost(models, ids, { requestsPerDay, inTokens, outTokens, cacheHi
 
 const money = (x) => (x === null || x === undefined ? '—' : `$${Number(x).toLocaleString('en-US', { maximumFractionDigits: 4 })}`);
 
-if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
+// Run as a CLI? Compare real paths: macOS temp dirs are symlinks (/var → /private/var), Windows has 8.3 short names.
+const realPath = (p) => { try { return realpathSync.native(p); } catch { return path.resolve(p); } };
+if (process.argv[1] && realPath(process.argv[1]).toLowerCase() === realPath(fileURLToPath(import.meta.url)).toLowerCase()) {
   const args = process.argv.slice(2);
   const flag = (n, d) => { const i = args.indexOf(`--${n}`); if (i < 0) return d; const v = args[i + 1]; args.splice(i, 2); return v; };
   const has = (n) => { const i = args.indexOf(`--${n}`); if (i < 0) return false; args.splice(i, 1); return true; };
